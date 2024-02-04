@@ -48,7 +48,7 @@
             :steps="1"
             :min="1"
             :max="254"  > 
-            <button class="ie" disabled style="background-color: rgba(255, 255, 255, 0); border: 0;"></button>
+            <button hidden id="placeholder-empty-0" class="ie" disabled style="background-color: rgba(255, 255, 255, 0); border: 0;"></button>
           </InputNumber>
         
           <InputNumber
@@ -148,6 +148,7 @@
 
     <footer v-if="editing" class="menuBottom container">
       <button
+      id="hide-menu"
       title="Hide Menu"
       class="ie large-font"
       style="background-color: rgba(238, 93, 10, 0.733); border:0; color:white;"
@@ -156,25 +157,29 @@
       </button>
 
       <button 
+      id="spacing-menu"
       title="Spacing Menu"
       class="ie"
       @click="menu = 'spacing'">
       Spacing
       </button>
 
-      <button 
+      <button
+      id="element-menu"
       title="Element Menu"
       class="ie"
       @click="menu = 'element'">
       Element
       </button>
       <button 
+      id="canvas-menu"
       title="Canvas Menu"
       class="ie"
       @click="menu = 'canvas'">
       Canvas
       </button>
       <button
+      id="run-automata"
       title="Run Automata"
       class="large-font ie"
       style="background-color: rgba(46, 118, 52, 0.4); color:white; border: 0cap;"
