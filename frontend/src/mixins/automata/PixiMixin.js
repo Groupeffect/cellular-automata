@@ -39,7 +39,6 @@ export default {
     },
     methods: {
         changeBackgroundColor() {
-            // this.pixi.render.background.color = this.configuration.canvasColor
             this.pixi.renderer.background.color = this.configuration.canvasColor
         },
         startApp() {
@@ -100,7 +99,7 @@ export default {
                 })
             })
 
-            this.grid = grid //.reverse()
+            this.grid = grid
             return this.grid
         },
 
@@ -152,7 +151,6 @@ export default {
                         element.h,
                         element.c,
                         id
-                        // Math.random() <= 0.5 ? this.$rC() : config.elementColor,
                     )
                 )
             }
@@ -170,32 +168,8 @@ export default {
                 }
                 this.graphicsMap = []
             }
-
         },
 
-        animate() {
-            if(this.pixi && this.pixi.stage && this.pixi.stage.children){
-
-                const graphics = [...this.pixi.stage.children]
-                if(graphics.length){
-                    // shift all down
-                    this.graphicsMap.map(e=>{
-                        if( e.shape instanceof Graphics) {
-
-                            // e.y += this.configuration.elementSpacing
-                            console.log(
-                                this.grid[e.id]
-                            )
-                        }
-                    })
-                    // add first row                    
-                    const firstRow = this.grid.filter(e=> e.row == 0 )
-                    const lastRow = this.grid.filter(e=> e.row == this.configuration.rows - 1  )
-                    
-                    // console.table(this.grid)
-                }
-            }
-        },
 
         appendShapes() {
             this.configuration.randomStartRow && this.createAutomataData()
@@ -220,10 +194,6 @@ export default {
             setTimeout(() => {
                 this.addShapes()
              }, 1000);
-             setTimeout(() => {
-                this.animate()
-             }, 2000);
-
         }
 
     }
