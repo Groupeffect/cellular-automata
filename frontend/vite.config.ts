@@ -21,22 +21,22 @@ export default defineConfig({
         icons: [
             {
               sizes:"144x144",
-              src:"assets/logo144.png",
+              src:"logo144.png",
               type: "img/png"
             },
             {
               sizes:"128x128",
-              src:"assets/logo128.png",
+              src:"logo128.png",
               type: "img/png"
             },
             {
               sizes:"48x48",
-              src:"assets/logo48.png",
+              src:"logo48.png",
               type: "img/png"
             },
             {
               sizes:"16x16",
-              src:"assets/logo16.png",
+              src:"logo16.png",
               type: "img/png"
             },
           ]
