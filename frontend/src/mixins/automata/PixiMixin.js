@@ -5,12 +5,9 @@ export default {
     data: ()=>({
         pixi: null,
         config: null,
-        canvasWidth: null,
-        canvasHeight: null,
-        canvasColor: '#000000',
-        rule: 57,
-        elementColor: '#000000',
-        elementSpacing: 10
+        grid: null,
+        rowCells: null,
+        graphicsMap: []
     }),
     computed: {
         ruleSet(){
@@ -27,7 +24,7 @@ export default {
             return Configuration.find("default")
         },
         canvasStyle(){
-            const c = Configuration.find("default")
+            const c = this.configuration
             return {
               width: c && c.canvasWidth ? String(c.canvasWidth) + 'px' : "100px",
               height: c && c.canvasHeight ? String(c.canvasHeight) + 'px' : "100px",
@@ -38,33 +35,73 @@ export default {
     watch:{
         updated() {
             console.log("updated")
-        },
-        canvasWidth() {
-            this.update({id:"default", canvasWidth: this.canvasWidth})
-            this.createAutomataData()
-        },
-        canvasHeight() {
-            this.update({id:"default", canvasHeight: this.canvasHeight})
-            this.createAutomataData()
-        },
-        rule() {
-            this.update({id:"default", rule: this.rule})
-        },
-        elementColor() {
-            this.update({id:"default", elementColor: this.elementColor})
-        },
-        canvasColor() {
-            this.update({id:"default", canvasColor: this.canvasColor})
-        },
-        elementSpacing() {
-            this.update({id:"default", elementSpacing: this.elementSpacing})
-            this.createAutomataData()
-        },
-        
+        }
     },
     methods: {
-        update(data) {
-            Configuration.save(data)
+        changeBackgroundColor() {
+            // this.pixi.render.background.color = this.configuration.canvasColor
+            this.pixi.renderer.background.color = this.configuration.canvasColor
+        },
+        startApp() {
+            console.log('START')
+            this.config = Configuration.loadConfig(window)
+            this.createAutomataData()
+
+        },
+        generateCell(col, cells) {
+
+            
+            const ruleCheck = `${cells[col-1]}${cells[col]}${cells[col+1]}`
+
+            const ruleIndex = this.ruleSet.neighborIndexes.indexOf(ruleCheck)
+            return this.ruleSet.mapping[ruleIndex]
+        },
+        createAutomataData() {
+            console.table("create new table")
+            const c = this.configuration
+            const grid = []
+            let cells 
+            // set start array
+            if(c.randomStartRow ){
+                cells = this.arrayFromNumber(c.cols).map(()=>Math.random() < 0.5 ? 0 : 1)
+            }
+
+            else {
+                cells = this.arrayFromNumber(c.cols).map(()=>0)
+                cells[cells.length/2] = 1
+            }
+
+            const box = cells.length * c.elementSpacing
+            const margin = (c.canvasWidth - box) / 2
+
+
+            this.arrayFromNumber(c.rows).map(row=>{
+                this.arrayFromNumber(c.cols).map(col=>{
+                    let data = {
+                        col: col,
+                        row: row,
+                        x: col * c.elementSpacing + margin,
+                        y: row * c.elementSpacing ,
+                        w: c.elementWidth,
+                        h: c.elementHeight,
+                        c: c.elementColor,
+                        state: 0
+                    }
+
+                    // cell element visible
+                    if( cells[col] == 1) {
+                        data.state = 1
+                    }
+
+                    if(col > 0 && col < c.cols - 1){
+                        cells[col] = this.generateCell(col, cells)
+                    }
+                    grid.push(data)
+                })
+            })
+
+            this.grid = grid //.reverse()
+            return this.grid
         },
 
         stage(){
@@ -89,44 +126,33 @@ export default {
             }
             this.pixi = new Application(pixiAppConfig)
             pixiDiv.appendChild(this.pixi.view)
-            this.pixi
+            return this.pixi
         },
-        createAutomataData() {
-            let c = Configuration.find("default")
-            if(c.elementSpacing < c.canvasWidth) {
-
-                const cols = Array.from(Array(Math.round(Number(c.canvasWidth / c.elementSpacing))).keys())
-                Configuration.save({id:"default", cols:cols})
-
-                
-            }
-            if(c.elementSpacing < c.canvasHeight) {
-                const rows = Array.from(Array(Math.round(Number(c.canvasHeight / c.elementSpacing))).keys())
-                Configuration.save({id:"default", rows:rows})
-            }
-            if(this.pixi){
-                this.pixi
-            }
+        arrayFromNumber(n) {
+            return Array.from(Array(Math.round(Number(n))).keys())
         },
-        element(x=0,y=0,w=10,h=10, color='rgba(255,255,255,1)') {            
+
+        element(x=0,y=0,w=10,h=10, color='rgba(255,255,255,1)', id) {            
             const rect = new Graphics()
             rect.beginFill(color)
             rect.drawRect(x,y,w,h)
             rect.endFill()
-            
+            this.graphicsMap.push({id:id, shape: rect})
             return rect
         },
 
-        generate(config, col, row){
+        generate(element,id){
             if( this.pixi && this.pixi.stage){
 
                 this.pixi.stage.addChild(
                     this.element(
-                        col * config.elementSpacing,
-                        row * config.elementSpacing,
-                        config.elementWidth,
-                        config.elementHeight,
-                        Math.random() <= 0.5 ? this.$rC() : config.elementColor,
+                        element.x,
+                        element.y,
+                        element.w,
+                        element.h,
+                        element.c,
+                        id
+                        // Math.random() <= 0.5 ? this.$rC() : config.elementColor,
                     )
                 )
             }
@@ -134,95 +160,71 @@ export default {
 
         removeShapes() {
             if(this.pixi && this.pixi.stage && this.pixi.stage.children){
-
                 const graphics = [...this.pixi.stage.children]
                 if(graphics.length){
                     graphics.map(e=>{
                         if( e instanceof Graphics) {
-                            // app.removeChild(e)
                             e.destroy()
                         }
                     })
                 }
+                this.graphicsMap = []
             }
 
         },
 
-        addShapes() {
-            const c = this.configuration
-            const cells = c.cols.map(()=>Math.random() < 0.5 ? 0 : 1)
-            this.removeShapes()
+        animate() {
+            if(this.pixi && this.pixi.stage && this.pixi.stage.children){
 
-            c.rows.map(row=>{
-                c.cols.map(col=>{
+                const graphics = [...this.pixi.stage.children]
+                if(graphics.length){
+                    // shift all down
+                    this.graphicsMap.map(e=>{
+                        if( e.shape instanceof Graphics) {
+
+                            // e.y += this.configuration.elementSpacing
+                            console.log(
+                                this.grid[e.id]
+                            )
+                        }
+                    })
+                    // add first row                    
+                    const firstRow = this.grid.filter(e=> e.row == 0 )
+                    const lastRow = this.grid.filter(e=> e.row == this.configuration.rows - 1  )
                     
-                    if( cells[col] == 1 ) {
-                        this.generate(c,col,row)
-                    }
-                    
-                    if(col > 0 && col < c.cols.length - 1){
+                    // console.table(this.grid)
+                }
+            }
+        },
 
-                        const ruleCheck = `${cells[col-1]}${cells[col]}${cells[col+1]}`
-                        const ruleIndex = this.ruleSet.neighborIndexes.indexOf(ruleCheck)
-                        cells[col] = this.ruleSet.mapping[ruleIndex]
-                    }
+        appendShapes() {
+            this.configuration.randomStartRow && this.createAutomataData()
 
-                })
+            this.grid.map((e)=>{
+                // // cell is 0 or 1
+                if(e.state==1){
+                    this.generate(e,`${e.row+1}${e.col}`)
+                }                
             })
+            console.log(this.pixi.screen)
+            console.log(this.pixi.screen.height)
+
+        },
+
+        addShapes() {
+            this.removeShapes()
+            this.appendShapes()
 
         },
         run() {
             setTimeout(() => {
                 this.addShapes()
              }, 1000);
+             setTimeout(() => {
+                this.animate()
+             }, 2000);
+
         }
 
-    },
-    created(){
-        this.config = Configuration.loadConfig(window)
-        
-    },
-    mounted() {
-        this.stage()
-
-        this.canvasWidth = this.configuration.canvasWidth
-        this.canvasHeight = this.configuration.canvasHeight
-        this.$refs.ruleInput.value = this.configuration.rule
-        this.rule = this.configuration.rule
-        this.$refs.rulePlus.addEventListener('click',()=>{
-            if(this.rule <= 254) {
-                this.$refs.ruleInput.stepUp()
-                this.rule += 1
-            }
-            
-        })
-        
-        this.$refs.ruleMinus.addEventListener('click',()=>{
-            if(this.rule > 0) {
-                this.$refs.ruleInput.stepDown()
-                this.rule -= 1
-            }
-            
-        })
-        
-        this.$refs.spacingInput.value = this.configuration.elementSpacing
-        this.elementSpacing = this.configuration.elementSpacing
-        this.$refs.spacingPlus.addEventListener('click',()=>{
-            if(this.elementSpacing <= 254) {
-                this.$refs.spacingInput.stepUp()
-                this.elementSpacing += 1
-            }
-            
-        })
-
-        this.$refs.spacingMinus.addEventListener('click',()=>{
-            if(this.elementSpacing >= 35) {
-                this.$refs.spacingInput.stepDown()
-                this.elementSpacing -= 1
-            }
-            
-        })
-        
-        this.run()
-  },
+    }
 }

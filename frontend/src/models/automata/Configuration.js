@@ -7,19 +7,21 @@ export default class Configuration extends Model {
     return {
       id: this.uid("default"),
       updated: this.attr(),
-      cols: this.attr(),
-      rows: this.attr(),
+      cols: this.attr(16),
+      rows: this.attr(20),
       rule: this.attr(58),
       canvasWidth: this.attr(),
       canvasHeight: this.attr(),
-      canvasColor: this.attr("#594f4f"),
-      pixiDivBackgroundColor: this.attr("#221529"),
-      elementSpacing: this.attr(40),
+      // canvasColor: this.attr("#594f4f"),
+      canvasColor: this.attr("#871212"),
+      elementSpacing: this.attr(20),
       elementShape: this.attr(),
-      elementColor: this.attr("#000000"),
+      elementColor: this.attr("#90c5df"),
       elementColorMode: this.attr(),
-      elementWidth: this.attr(30),
-      elementHeight: this.attr(30)
+      elementWidth: this.attr(15),
+      elementHeight: this.attr(15),
+      pixiDivBackgroundColor: this.attr("#221529"),
+      randomStartRow: this.attr(true)
     };
   }
 
@@ -28,7 +30,7 @@ export default class Configuration extends Model {
     useRepo(Configuration).save({
       id: id,
       canvasWidth: window.innerWidth,
-      canvasHeight: window.innerHeight - window.innerHeight / 4,
+      canvasHeight: window.innerHeight - window.innerHeight / 2,
     })
     return Configuration.find(id)
   }
@@ -38,5 +40,9 @@ export default class Configuration extends Model {
   }
   static save(data) {
     return useRepo(Configuration).save(data)
+  }
+  static update(data) {
+    data.updated = Date.now()
+    useRepo(Configuration).save(data)
   }
 }

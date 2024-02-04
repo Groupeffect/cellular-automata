@@ -121,8 +121,11 @@ body {
   color: white;
 }
 
-.menuBtn {
-  position: fixed; top: 8px; left: 8px;
+.menuBottom {
+  position: absolute;
+  display: inline;
+  bottom: 12px;
+  width: 100%;
 }
 
 .w100 {
