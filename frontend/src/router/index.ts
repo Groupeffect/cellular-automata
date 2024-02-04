@@ -9,14 +9,6 @@ const router = createRouter({
       path: '/',
       name: 'Home',
       component: HomeView,
-      // children: [
-      //   {
-      //     path: '/edit',
-      //     name: 'Editor',
-      //     // @ts-ignore
-      //     component: () => import('@/components/automata/EditorCanvas.vue')
-      //   }
-      // ]
     }
   ]
 })

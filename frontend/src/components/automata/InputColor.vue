@@ -32,9 +32,3 @@ export default {
     }
 }
 </script>
-<style scoped>
-  .inline-controls {
-      margin-top: 16px;
-  }
- 
-</style>
