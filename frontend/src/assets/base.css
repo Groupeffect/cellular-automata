@@ -85,11 +85,11 @@ body {
   -moz-osx-font-smoothing: grayscale; */
   background-color: black;
   color: white;
+  min-width: 375px;
+
 }
 
-button {
-  border: 0;
-}
+
 
 .container {
   margin-left: auto;

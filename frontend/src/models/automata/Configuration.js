@@ -5,7 +5,8 @@ export default class Configuration extends Model {
  
   static fields() {
     return {
-      id: this.uid(),
+      id: this.uid("default"),
+      updated: this.attr(),
       cols: this.attr(),
       rows: this.attr(),
       rule: this.attr(58),
@@ -13,22 +14,23 @@ export default class Configuration extends Model {
       canvasHeight: this.attr(),
       canvasColor: this.attr("#594f4f"),
       pixiDivBackgroundColor: this.attr("#221529"),
-      elementSpacing: this.attr(),
+      elementSpacing: this.attr(40),
       elementShape: this.attr(),
-      elementColor: this.attr("#594f4f"),
+      elementColor: this.attr("#000000"),
       elementColorMode: this.attr(),
-      elementWidth: this.attr(8),
-      elementHeight: this.attr(8)
+      elementWidth: this.attr(30),
+      elementHeight: this.attr(30)
     };
   }
 
-  static loadConfig(window){
+  static loadConfig(window, id = "default"){
+
     useRepo(Configuration).save({
-      id: "default",
+      id: id,
       canvasWidth: window.innerWidth,
       canvasHeight: window.innerHeight - window.innerHeight / 4,
-      elementSpacing: 10
     })
+    return Configuration.find(id)
   }
 
   static find(id) {

@@ -11,8 +11,11 @@ import { RouterView } from 'vue-router'
   </div>
 </template>
 
-<style scoped>
+<style>
 
-
+html, body {
+  min-width: 375px;
+  max-width: 1980px;
+}
 
 </style>
