@@ -16,9 +16,9 @@ export default defineConfig({
         name: "Cellular-Automata",
         short_name: "cellular",
         description: "Wolframs algorithm by Groupeffect",
-        background_color: "#000000",
+        background_color: "#ffffff",
         display:"standalone",
-
+        theme_color: "#ffffff",
         icons: [
             {
               sizes:"144x144",
@@ -27,14 +27,26 @@ export default defineConfig({
               purpose: 'any'
             },
             {
-              sizes:"any",
-              src:"logo.svg",
-            },
-            {
               sizes:"144x144",
               src:"logo144.png",
               type: "img/png",
               purpose: 'maskable'
+            },
+            {
+              sizes:"512x512",
+              src:"logo512.png",
+              type: "img/png",
+              purpose: 'maskable'
+            },
+            {
+              sizes:"512x512",
+              src:"logo512.png",
+              type: "img/png",
+              purpose: 'any'
+            },
+            {
+              sizes:"any",
+              src:"logo.svg",
             },
             {
               sizes:"128x128",
