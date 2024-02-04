@@ -191,9 +191,7 @@ export default {
 
         },
         run() {
-            setTimeout(() => {
-                this.addShapes()
-             }, 1000);
+            this.addShapes()
         }
 
     }

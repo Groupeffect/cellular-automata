@@ -48,7 +48,7 @@
             :steps="1"
             :min="1"
             :max="254"  > 
-            <button hidden id="placeholder-empty-0" class="ie" disabled style="background-color: rgba(255, 255, 255, 0); border: 0;"></button>
+            <div class="ie" style="display: inline; padding-left: 30px;padding-right: 30px;" > </div>
           </InputNumber>
         
           <InputNumber
@@ -206,11 +206,14 @@ export default {
     InputSlider
   },
   data:()=>({
-    editing:true,
+    editing:false,
     menu: "element"
   }),
   mounted() {
     this.stage()
+    setTimeout(() => {
+                this.addShapes()
+    }, 1000);
   },
   created() {
     // load automata
