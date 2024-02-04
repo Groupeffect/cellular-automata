@@ -22,7 +22,14 @@ export default defineConfig({
             {
               sizes:"144x144",
               src:"logo144.png",
-              type: "img/png"
+              type: "img/png",
+              purpose: 'any'
+            },
+            {
+              sizes:"144x144",
+              src:"logo144.png",
+              type: "img/png",
+              purpose: 'maskable'
             },
             {
               sizes:"128x128",

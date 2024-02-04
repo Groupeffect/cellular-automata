@@ -7,7 +7,8 @@
 
     <div v-if="!editing">
       <button
-        
+        title="Edit"
+        id="edit"
         class="large-font container"
         style="background-color: rgba(238, 93, 10, 0.733); color:white; border: 0cap; height: 45px; margin-bottom: 24px;"
         @click=" editing = !editing">
@@ -15,6 +16,8 @@
       </button>
   
       <button
+        title="run"
+        id="run"
         class="large-font container"
         style="background-color: rgba(46, 118, 52, 0.4); color:white; border: 0cap; height: 45px;"
         @click="run()">

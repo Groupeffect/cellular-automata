@@ -1,5 +1,5 @@
 <template>
-    <input  v-model="instance" ref="instanceInput" class="ie" type="checkbox" :title="label" >
+    <input :id="label"  v-model="instance" ref="instanceInput" class="ie" type="checkbox" :title="label" >
 </template>
 <script>
 import Configuration from "@/models/automata/Configuration.js"

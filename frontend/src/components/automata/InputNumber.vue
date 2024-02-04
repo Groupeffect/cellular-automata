@@ -4,6 +4,7 @@
                   <div class="label">{{ label }}</div>
                   <button ref="instanceMinus" class="ie large-font" :title="`${label} minus`">-</button>
                   <input
+                    :id="label"
                     v-model="instance"
                     ref="instanceInput"
                     class="ie" type="number"

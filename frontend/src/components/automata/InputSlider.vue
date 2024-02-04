@@ -4,6 +4,7 @@
     ref="instanceInput"
     class="ie"
     type="range"
+    :id="label"
     :title="label"
     :max="max"
     :min="min"
