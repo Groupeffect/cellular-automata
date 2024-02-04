@@ -18,12 +18,17 @@ export default defineConfig({
         description: "Wolframs algorithm by Groupeffect",
         background_color: "#000000",
         display:"standalone",
+
         icons: [
             {
               sizes:"144x144",
               src:"logo144.png",
               type: "img/png",
               purpose: 'any'
+            },
+            {
+              sizes:"any",
+              src:"logo.svg",
             },
             {
               sizes:"144x144",
