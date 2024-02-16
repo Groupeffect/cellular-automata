@@ -34,7 +34,6 @@ export default {
     },
     watch:{
         updated() {
-            console.log("updated")
         }
     },
     methods: {
@@ -42,7 +41,6 @@ export default {
             this.pixi.renderer.background.color = this.configuration.canvasColor
         },
         startApp() {
-            console.log('START')
             this.config = Configuration.loadConfig(window)
             this.createAutomataData()
 
@@ -56,7 +54,6 @@ export default {
             return this.ruleSet.mapping[ruleIndex]
         },
         createAutomataData() {
-            console.table("create new table")
             const c = this.configuration
             const grid = []
             let cells 
@@ -180,8 +177,6 @@ export default {
                     this.generate(e,`${e.row+1}${e.col}`)
                 }                
             })
-            console.log(this.pixi.screen)
-            console.log(this.pixi.screen.height)
 
         },
 
