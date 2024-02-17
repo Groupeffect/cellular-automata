@@ -1,5 +1,7 @@
 import { Application, Graphics} from 'pixi.js'
 import Configuration from "@/models/automata/Configuration.js"
+import { useRepo } from 'pinia-orm'
+import Grid from '@/models/automata/Grid'
 export default {
     name: 'PixiMixin',
     data: ()=>({
@@ -187,6 +189,14 @@ export default {
         },
         run() {
             this.addShapes()
+            Grid.update({
+                ...this.configuration,
+                ...this.ruleSet,
+                id:"default",
+                startTraining: Date.now(),
+                grid: this.grid
+            })
+            Configuration.save({id:"default", startTraining: Date.now()})
         }
 
     }
