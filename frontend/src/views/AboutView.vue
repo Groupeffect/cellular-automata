@@ -24,7 +24,6 @@ p {
   font-size: large;
 }
 .container {
-  font-family: 'Courier New', Courier, monospace;
   margin-left: auto;
   margin-right: auto;
   text-align: left;
